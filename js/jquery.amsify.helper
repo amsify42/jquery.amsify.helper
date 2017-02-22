@@ -1,0 +1,255 @@
+ // Amsify42 Helper 1.0.0
+ // http://www.amsify42.com
+ (function(AmsifyHelper, $, undefined) {
+
+ 	//Private Properties
+ 	var base_url    = window.location.protocol+'//'+window.location.host;
+    var _token      = $('meta[name="_token"]').attr('content');
+
+    setFlashMessage();
+
+    //Public Properties
+    AmsifyHelper.base_url = base_url;
+
+    //Public Functions
+    AmsifyHelper.getToken = function() {
+        return _token;
+    };
+
+    AmsifyHelper.fieldByName = function(name) {
+        return '*[name="'+name+'"]';
+    };
+
+    AmsifyHelper.getActionURL = function(urlString) {
+        var URL       = AmsifyHelper.base_url;
+        var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
+        if(regexURL.test(urlString)) {
+            URL = urlString;
+        } else {
+            URL += '/'+urlString;
+        }
+        return URL;
+    };
+
+    AmsifyHelper.stopSubmit = function(e, submitSelector, defaultText, ret) {
+        e.preventDefault(); 
+        if(submitSelector !== undefined && defaultText !== undefined) {
+            $submitSelector.prop('disabled', false).html(defaultText); 
+        }
+        if(ret !== undefined) {
+            return ret;
+        }
+    };
+
+    AmsifyHelper.detectIE = function() {
+
+        var ua = window.navigator.userAgent;
+
+        var msie = ua.indexOf('MSIE ');
+        if (msie > 0) {
+            // IE 10 or older => return version number
+            return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        }
+
+        var trident = ua.indexOf('Trident/');
+        if (trident > 0) {
+            // IE 11 => return version number
+            var rv = ua.indexOf('rv:');
+            return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+        }
+
+        var edge = ua.indexOf('Edge/');
+        if (edge > 0) {
+           // IE 12 => return version number
+           return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+        }
+
+        // other browser
+        return false;
+    };
+
+
+    AmsifyHelper.getFormData = function(formSelector, extraFields) {
+
+    	var formData;
+
+    	if(!AmsifyHelper.detectIE()) {
+	      	formData = new FormData($(formSelector)[0]); 
+	            // adding custom fields
+	            if(extraFields !== undefined) {
+		            if(getObjectSize(extraFields) > 0) {
+		                $.each(extraFields, function(key, val) {
+		                  formData.append(key, val);  
+		                });
+		            }
+	            }
+	      } else {
+	        formData = $(formSelector).serialize();
+	            // adding custom fields
+	            if(extraFields !== undefined) {
+		            if(getObjectSize(extraFields) > 0) {
+		                $.each(extraFields, function(key, val) {
+                            formData += '&'+key+'='+val; 
+		                });
+		            }
+	            }
+	      }
+
+	    return formData;  
+    };
+
+
+    AmsifyHelper.getObjectSize = function(object, key) {
+    	var count = 0;
+        var key;
+        for(key in object) {
+            if(object.hasOwnProperty(key)) {
+                count++;
+            }
+        }
+        return count;
+    };
+
+
+    AmsifyHelper.distinctArray = function(array) {
+       var result = [];
+       $.each(array, function(index,value){
+           if($.inArray(value, result) == -1) {
+               result.push(value); 
+           } 
+       });
+       return result;
+    };
+
+
+    AmsifyHelper.checkUndefinedVar = function(variable) {
+    	if($.isEmptyObject(variable)) {
+          return false;
+        }
+        return true;
+    };
+
+
+    AmsifyHelper.upperCaseFirst = function(string) {
+    	return string.replace(/^[a-z]/, function(m){ return m.toUpperCase() });
+    };
+
+
+    AmsifyHelper.showURL  = function(path, page) {
+        if(AmsifyHelper.detectIE() == false) {
+            var targetURL   =  '';
+            if(path !== undefined) {
+                targetURL  +=  path;  
+            }
+            if(page !== undefined) {
+                targetURL  +=  '?page='+page;  
+            }
+            window.history.pushState('', '', targetURL);
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        }
+    };
+
+
+
+    AmsifyHelper.showFlash = function(message, type) {
+         checkMessage(message, type);     
+         $('.amsify-fixed-message').slideDown();
+         setTimeout(function(){ $('.amsify-fixed-message').slideUp();}, 5000);
+    };
+
+    function checkMessage(message, type) {
+
+        var msgClass    = 'black';
+        if(type !== undefined) {
+            if(type == 'error') {
+                msgClass = 'red';
+                message = '\u2718 '+message;
+            } else if(type == 'success') {
+                msgClass = 'green';
+                message = '\u2714 '+message;
+            } else if(type == 'info') {
+                msgClass = 'blue';
+            }
+        }
+
+
+        var appendMessages = false;
+        if(AmsifyHelper.detectIE()) {
+           if($('.amsify-fixed-message').html() === undefined) {
+                appendMessages = true;
+           }     
+        } else {
+            if(!$('.amsify-fixed-message').length) {
+                appendMessages = true;
+            }    
+        }
+
+        if(appendMessages) {
+            var structure =    [
+              {'<div/>': { 'class':'amsify-fixed-message '+msgClass, text:message }, 'prependTo': 'body'},
+              {'<span/>': { 'class':'amsify-message-close', 'text':'\u2716'}, 'appendTo': '.amsify-fixed-message'},
+            ];
+            AmsifyHelper.addHTML(structure);
+        } else {
+            $('.amsify-fixed-message').attr('class', 'amsify-fixed-message '+msgClass).html(message+'<span class="amsify-message-close">X</span>');
+        }
+    }
+
+    AmsifyHelper.addHTML = function(htmlStructure) {
+        $.each(htmlStructure, function(index, element){
+          var $object;
+          if(element !== undefined) {
+              $.each(element, function(key, tag){
+                if(key != 'appendTo' && key != 'prependTo') {
+                  $object = $(key, tag);
+                } else {
+                  $object[key](tag);
+                }
+              });
+            }
+        });
+    };
+
+    AmsifyHelper.iterateErrors = function(fields) {
+        $.each(fields, function(field, message){
+          AmsifyForm.showError(field, message);
+        });
+    };
+
+
+    function setFlashMessage() {
+        $(document).on('click', '.amsify-message-close', function(){
+            $(this).parent('.amsify-fixed-message').slideUp();
+        });
+    };
+
+
+    AmsifyHelper.callback = function(config, key, selector, attr) {
+        var checkAttr = true;
+        if(config !== undefined) {
+            if(config[key] !== undefined && typeof config[key] == "function") {
+                checkAttr = false;
+                config[key]();
+            }
+        }
+        if(checkAttr && selector !== undefined && attr !== undefined) {
+            if($(selector).attr(attr)) {
+              eval($(selector).attr(attr));
+            }
+        }
+    };
+
+    AmsifyHelper.bodyLoaderIEfix = function(type) {
+        if(AmsifyHelper.detectIE()) {
+            if(type !== undefined) {
+                if(type == 'modal') {
+                    $('.modal-body-loader').css({'top':'0', 'left':'0'});
+                }
+            } else {
+                $('.section-body-loader').css({'top':'0', 'left':'0'});
+            }
+        }
+    };
+
+
+ }(window.AmsifyHelper = window.AmsifyHelper || {}, jQuery));   
