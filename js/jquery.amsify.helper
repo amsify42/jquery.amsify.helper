@@ -252,4 +252,4 @@
     };
 
 
- }(window.AmsifyHelper = window.AmsifyHelper || {}, jQuery));   
+ }(window.AmsifyHelper = window.AmsifyHelper || {}, jQuery));
