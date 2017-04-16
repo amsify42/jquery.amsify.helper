@@ -6,12 +6,12 @@ It can also be used separately if you find the functions inside it are useful ac
 1. AmsifyHelper.base_url
 ### It is the only property variable in helper file and rest are functions. This will get the base url of the application. If you want to change the base url and make it available in all helper functions and amsify jquery plugins, you can simply do this
 
-``html
+```html
 AmsifyHelper.base_url = 'http://www.yoursite.com';
-``html
+```
 ### or if you just want to add something to base url
-``html
+```html
 AmsifyHelper.base_url = AmsifyHelper.base_url + '/myproject';
 //or
 AmsifyHelper.base_url += '/myproject';
-``html
+```
