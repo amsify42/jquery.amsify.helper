@@ -1,2 +1,2 @@
-# jquery.amsify.helper
-This is the Jquery helper file for my other plugins and also useful when used separately.
+# Amsify Jquery Helper
+This is the jquery helper file for amsify jquery plugins and can also be used separately.
