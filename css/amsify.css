@@ -1,0 +1,476 @@
+.row-text {
+    padding: 2px;
+    margin: 8px 0px 0px 0px;
+    /*width: 100%;*/
+}
+
+.section-area {
+  position: relative;
+}
+
+.section-body-loader,
+.modal-body-loader {
+	display: none;
+	width: 100%;
+    height: 100%;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    
+    position: absolute;
+    z-index:99999;
+    opacity: 0.9;	
+}
+
+.only-loader {
+	background: url('../../images/loader.gif') no-repeat center;
+}
+
+.fill-background {
+	background: #E8E8E8 url('../../images/loader.gif') no-repeat center;
+}
+
+
+.field-error {
+    color:red;
+}
+
+textarea.amsify-validate-field {
+    min-height: 150px;
+    overflow: hidden;
+}
+
+.modal-fixed-footer {
+    width:75% !important;
+}
+
+.amsify-modal {
+    display: none;
+    visibility:none;
+    width: 100%;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.42);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+.amsify-modal .modal-content {
+    position: relative;
+    width:60%;
+    margin:42px auto;
+
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,0.2);
+    outline: 0;
+
+    -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
+    transform: translate(0,0);
+
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+.amsify-modal .modal-large {
+    width: 90%;
+}
+
+
+.amsify-modal .modal-content .modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.amsify-modal .modal-content .modal-body {
+    min-height: 100px;
+    padding: 15px;
+}
+
+.amsify-modal .modal-content .modal-footer {
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+
+
+
+.amsify-modal .modal-btn {
+    padding: 7px 20px;
+    margin: 0px 5px;
+    border: 1px solid #a2a2a2;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+
+
+.amsify-modal .btn-red {
+    background: #de1717;
+    color: white;
+    border: 1px solid #fd6262;
+}
+
+.amsify-modal .btn-red:hover {
+    background: #fd6262;
+}
+
+
+.amsify-modal .btn-green {
+    background: green;
+    color: white;
+    border: 1px solid #139c13;
+}
+
+.amsify-modal .btn-green:hover {
+    background: #139c13;
+}
+
+.amsify-modal .btn-blue {
+    background: blue;
+    color: white;
+    border: 1px solid #3f65ef;
+}
+
+.amsify-modal .btn-blue:hover {
+    background: #3f65ef;
+}
+
+.amsify-modal .btn-orange {
+    background: #e28422;
+    color: white;
+    border: 1px solid orange;
+}
+
+.amsify-modal .btn-orange:hover {
+    background: orange;
+}
+
+
+.amsify-modal .btn-red:active,
+.amsify-modal .btn-green:active,
+.amsify-modal .btn-blue:active,
+.amsify-modal .btn-orange:active {
+    -webkit-box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+
+
+
+
+
+
+
+.amsify-sort-table {
+    cursor: pointer;
+}
+
+.amsify-column-input {
+    
+}
+
+.sortable-table tbody tr {
+    cursor: move;
+}
+
+
+
+.amsify-ajax-suggestions-container {
+    list-style: none;
+    /*width: 90%;*/
+    background: white;
+    border-radius: 1px;
+    padding: 7px 0px 7px 0px;
+    position: absolute;
+    border: 1px solid #b2b2f7;
+    z-index: 99999999;
+}
+
+ul.amsify-ajax-suggestions-container li {
+    padding: 3px;
+}
+
+/*ul.amsify-ajax-suggestions-container li:hover,
+ul.amsify-ajax-suggestions-container li:focus {
+    cursor: pointer;
+    background-color: #9de0ff;
+}*/
+
+
+ul.amsify-ajax-suggestions-container li.active,
+ul.amsify-ajax-suggestions-container li.active {
+    cursor: pointer;
+    background-color: #9de0ff;
+}
+
+
+/*ul.amsify-ajax-suggestions-container li a:hover,
+ul.amsify-ajax-suggestions-container li a:focus {
+    cursor: pointer;
+    background-color: #ff9dae;
+}*/
+
+
+.amsify-fixed-message {
+    position: fixed;
+    /* top: 7%; */
+    /* left: 50%; */
+    padding: 9px 4px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    z-index: 99999999;
+    font-weight: bold;
+    font-size: 15px;
+    display: none;
+}
+
+.amsify-fixed-message.black {
+    background: rgb(39, 39, 39);
+    background: rgba(39, 39, 39, 0.9);
+    color: white;
+}
+
+.amsify-fixed-message.red {
+   background: rgb(191, 33, 33);
+   background: rgba(191, 33, 33, 0.9);
+   color: white; 
+}
+
+.amsify-fixed-message.green {
+    background: rgb(6, 158, 11);
+    background: rgba(6, 158, 11, 0.9);
+    color: white;
+}
+
+.amsify-fixed-message.blue {
+    background: rgb(17, 87, 202);
+    background: rgba(17, 87, 202, 0.9);
+    color: white;
+}
+
+.amsify-fixed-message .amsify-message-close {
+    float: right;
+    margin-right: 1%;
+    cursor: pointer;
+    padding: 1px;
+}
+
+.amsify-fixed-message .amsify-message-close:hover {
+    opacity: 0.7;
+}
+
+.amsify-form-section {
+    display: none;
+}
+
+
+.amsify-ajax-item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.amsify-ajax-load-more {
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.amsify-fileupload-info-area {
+    width: 100%;
+    border: 1px solid #dbdbdb;
+    padding: 5px 5px 7px 5px;
+    margin: 0px 0px 5px 0px;
+    min-height: 44px;
+}
+
+.amsify-fileupload-button-area {
+    width: 100%;
+    margin: 0 auto;
+    min-height: 32px;
+}
+
+
+.amsify-fileupload-remove,
+.amsify-fileupload-select,
+.amsify-fileupload-upload {
+    /*width: 50%;*/ 
+    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.amsify-fileupload-select,
+.amsify-fileupload-upload,
+.amsify-fileupload-remove {
+    background-color: white;
+    border: 1px solid #bcbcbc;
+}
+
+.amsify-fileupload-select:hover,
+.amsify-fileupload-upload:hover,
+.amsify-fileupload-remove:hover {
+    background-color: #eeeeee;
+}
+
+
+.amsify-fileupload-remove:active,
+.amsify-fileupload-select:active,
+.amsify-fileupload-upload:active {
+    -webkit-box-shadow: inset 0px 3px 5px rgba(0,0,0,0.125);
+    -moz-box-shadow: inset 0px 3px 5px rgba(0,0,0,0.125);
+    box-shadow: inset 0px 3px 5px rgba(0,0,0,0.125);
+    background-image: none;
+    outline: 0;
+}
+
+/*.amsify-fileupload-remove:active {
+    color: white;
+    background-color: #f49a9a;
+    border-color: #adadad;
+}*/
+
+.amsify-fileupload-select:active,
+.amsify-fileupload-upload:active {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.amsify-fileupload-select {
+    float: left;
+}
+
+.amsify-fileupload-upload {
+    display: none;
+    float: right;
+    margin-right: 5px;
+}
+
+
+.amsify-fileupload-loader {
+    padding:0px 10px 0px 10px;
+    display: none;
+    float: left;
+    margin: 5px 0px 0px 0px;
+}
+
+.amsify-fileupload-info {
+    display: none;
+    border: 1px solid #d5d5d5;
+    line-height: 30px;
+    padding: 6px 10px 8px 30px;
+    margin: 5px 0px 0px 0px;
+}
+
+.amsify-fileupload-remove {
+    float: right;
+    display: none;
+}
+
+
+
+.amsify-fileupload-drag-area {
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center;
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+    -moz-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+    transition: 0.5s ease;
+}
+
+
+.amsify-drag-border {
+    background: #828282;
+    color: white;
+    -moz-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+    transition: 0.5s ease;
+}
+
+.amsify-fileupload-info ol {
+    padding: 0;
+    margin: 0 auto;
+}
+
+.amsify-fileupload-info ol li {
+    padding: 5px;
+}
+
+.amsify-fileupload-info ol li:hover {
+    background: #e6e6e6;
+}
+
+.amsify-progress-bar {
+    width: 50%;
+    background-color: red;
+    border: 1px solid grey;
+    height: 4px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 4px;
+    display: block;
+}
+
+.amsifyupload-percentage {
+    float: right;
+    background: #3e3ef5;
+    color: white;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    padding: 0px 5px;
+    text-align: center;
+}
+
+.amsify-fileupload-loader-each {
+}
+
+.refresher {
+    cursor: move;
+    max-width: 15px;
+    margin: 0px 10px 0px 0px;
+    float: left;
+}
