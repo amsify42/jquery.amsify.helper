@@ -28,11 +28,11 @@
 }
 
 .only-loader {
-	background: url('../../images/loader.gif') no-repeat center;
+	background: url('../images/loader.gif') no-repeat center;
 }
 
 .fill-background {
-	background: #E8E8E8 url('../../images/loader.gif') no-repeat center;
+	background: #E8E8E8 url('../images/loader.gif') no-repeat center;
 }
 
 
