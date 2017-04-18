@@ -50,7 +50,7 @@ It will simply return the locale name from **meta tag** having name **_locale** 
 ```
 It will simply return the csrf token from **meta tag** having name **_token** if exist
 
-### Get Token
+### Set Event
 ```txt
   AmsifyHelper.setEvent(fromDOM, event, selector, callback);
 ```
@@ -63,3 +63,33 @@ Let's say we want to create click event for button selector
   });
 ```
 As you can see the first parameter we passed as **false**. That indicates that click event will not work for buttons which are generated in DOM after append, prepend or some other way. If you want to make this event work even for appended buttons you can pass it as **true**
+
+### Get action URL
+```txt
+  AmsifyHelper.getActionURL(urlString);
+```
+This will simply check the parameter whether it is relative or absolute, if the parameter is relative URL then it will send the complete URL along with base url
+
+### Detect IE
+```txt
+  AmsifyHelper.detectIE();
+```
+It will check whether the browser is IE
+
+### Get Form Data
+```txt
+  AmsifyHelper.getFormData(formSelector, serialize, extraFields);
+```
+This is return the form data based on parameters we pass.
+Three parameters are:
+<br/>
+formSelector - form selector 
+<br/>
+serialize - boolean - decides whether you want serialize or form data object
+<br/>
+extraFields - array/object - having key as field name and value as its field value
+```js
+  var extraFields = {};
+  extraFields['extra_field'] = 10;
+  AmsifyHelper.getFormData('form', false, extraFields);
+```
