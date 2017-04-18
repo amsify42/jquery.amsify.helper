@@ -3,6 +3,7 @@ This is the jquery helper file for amsify jquery plugins. It has a list of funct
 
 It can also be used separately if you find the functions inside it are useful according to your requirement. Below is the information on how you can call its functions.
 
+### Base Url 
 ```txt
 AmsifyHelper.base_url
 ```
@@ -18,6 +19,7 @@ AmsifyHelper.base_url = AmsifyHelper.base_url + '/myproject';
 AmsifyHelper.base_url += '/myproject';
 ```
 
+### App Url
 ```txt
 AmsifyHelper.AppUrl(route)
 ```
