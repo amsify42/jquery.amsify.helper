@@ -37,3 +37,29 @@ Now, this will return
 ```txt
   http://site.com/en/contact-us
 ```
+
+### Get Locale
+```txt
+  AmsifyHelper.getLocale();
+```
+It will simply return the locale name from **meta tag** having name **_locale** if exist
+
+### Get Token
+```txt
+  AmsifyHelper.getToken();
+```
+It will simply return the csrf token from **meta tag** having name **_token** if exist
+
+### Get Token
+```txt
+  AmsifyHelper.setEvent(fromDOM, event, selector, callback);
+```
+This will create jquery event based on event name, selector and callback function is passed.
+<br/>
+Let's say we want to create click event for button selector
+```js
+  AmsifyHelper.setEvent(false, 'click', 'button', function(e){
+    alert('clicked');
+  });
+```
+As you can see the first parameter we passed as **false**. That indicates that click event will not work for buttons which are generated in DOM after append, prepend or some other way. If you want to make this event work even for appended buttons you can pass it as **true**
