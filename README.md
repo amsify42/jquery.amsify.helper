@@ -163,7 +163,6 @@ complete - this will run the complete callback after ajax call
 afterError - this will run in success callback after error is being responded from server
 afterResponseError - this will run in error callback after error from server directly
 afterSuccess - this will run in success callback after success is being responded from server
-example of config you can pass
 ```
 Below is the config object example
 ```js
@@ -177,43 +176,43 @@ Below is the config object example
 }
 ```
 
-### Form field uppercase
+### Input uppercase
 ```txt
   AmsifyHelper.upperCase(selector);
 ```
 This will make the input of selector field to uppercase on **keyup** and **focusout**
 
-### Form field only decimal
+### Input only decimal
 ```txt
   AmsifyHelper.onlyDecimals(selector);
 ```
 It will transform the input to decimals on **keyup** and **focusout**
 
-### Form field only numbers
+### Input only numbers
 ```txt
   AmsifyHelper.onlyNumbers(selector);
 ```
 It will transform the input to numbers on **keyup** and **focusout**
 
-### Form field no special char
+### Input no special char
 ```txt
   AmsifyHelper.noSpecialChar(selector);
 ```
 It will transform the input and remove special chars on **keyup** and **focusout**
 
-### Form field single space
+### Input single space
 ```txt
   AmsifyHelper.singleSpace(selector);
 ```
 It will transform the input with multiple spaces to single space on **keyup** and **focusout**
 
-### Form field no space
+### Input no space
 ```txt
   AmsifyHelper.noSpace(selector);
 ```
 It will transform the input with no spaces on **keyup** and **focusout**
 
-### Form field masking
+### Input masking
 ```txt
   AmsifyHelper.mask(selector, pattern, type);
 ```
