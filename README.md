@@ -93,3 +93,21 @@ extraFields - array/object - having key as field name and value as its field val
   extraFields['extra_field'] = 10;
   AmsifyHelper.getFormData('form', false, extraFields);
 ```
+
+### Distinct Array
+```txt
+  AmsifyHelper.distinctArray(array);
+```
+This will return unique array of array passed
+
+### UpperCase First
+```txt
+  AmsifyHelper.upperCaseFirst(string);
+```
+First letter of the string will be uppercase
+
+### Show url in address bar
+```txt
+  AmsifyHelper.showURL(path, page);
+```
+First parameter could be absolute or relative path. When second parameter **page** as number is passed it will add extra string to url. Lets say path is **http://site.com/contact** and page no. is **1** then url appear in address bar will be **http://site.com/contact?page=1**
