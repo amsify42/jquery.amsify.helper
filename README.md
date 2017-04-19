@@ -153,14 +153,71 @@ This will trim the string based on limit passed in second parameter. Third param
 Here are the details of four parameters:<br/>
 **method** : It is the method action url we pass to ajax, it can be absolute or relative url.<br/>
 **params** : It is an object of parameters or form data.<br/>
+**type** : By default it is **post** method, if you want you can pass it as **GET** or some other valid method name.<br/>
 **config** : It is an object which contains multiple callback function if required.<br/>
-by default this method calls **success** and **error** callbacks, if you wish to add some other callback you can add among these name<br/>
-*beforeSend*<br/>
+by default this method calls **success** and **error** callbacks.<br/>
+If you wish to add some other callback you can add among these name<br/>
+*beforeSend* - this will run the beforeSend callback before ajax call<br/>
 *xhr* - this will run the XHR callback before ajax call<br/>
 *complete* - this will run the complete callback after ajax call<br/>
 *afterError* - this will run in success callback after error is being responded from server<br/>
 *afterResponseError* - this will run in error callback after error from server directly<br/>
 *afterSuccess* - this will run in success callback after success is being responded from server<br/>
-**type** : By default it is **post** method, if you want you can pass it as **GET** or some other valid method name.<br/>
+example of config you can pass
+```js
+{
+  beforeSend : function(){
+    // do something
+  },
+  complete : function(){
+    // do something
+  }
+}
+```
 
+### Form field uppercase
+```txt
+  AmsifyHelper.upperCase(selector);
+```
+This will make the input of selector field to uppercase on **keyup** and **focusout**
 
+### Form field only decimal
+```txt
+  AmsifyHelper.onlyDecimals(selector);
+```
+It will transform the input to decimals on **keyup** and **focusout**
+
+### Form field only numbers
+```txt
+  AmsifyHelper.onlyNumbers(selector);
+```
+It will transform the input to numbers on **keyup** and **focusout**
+
+### Form field no special char
+```txt
+  AmsifyHelper.noSpecialChar(selector);
+```
+It will transform the input and remove special chars on **keyup** and **focusout**
+
+### Form field single space
+```txt
+  AmsifyHelper.singleSpace(selector);
+```
+It will transform the input with multiple spaces to single space on **keyup** and **focusout**
+
+### Form field no space
+```txt
+  AmsifyHelper.noSpace(selector);
+```
+It will transform the input with no spaces on **keyup** and **focusout**
+
+### Form field masking
+```txt
+  AmsifyHelper.mask(selector, pattern, type);
+```
+It will transform the input and mask according to the given pattern in second parameter on **keyup** and **focusout**. Third parameter **type** can be **numbers**, **alphabets**, **alphanumeric** and by default it is **numbers**. <br/>
+Below is the example <br/>
+```js
+  AmsifyHelper.mask('.mask-date', 'MM-DD-YYYY');
+```
+For more information on this option go to my repository **jquery.amsify.form**.
