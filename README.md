@@ -110,4 +110,14 @@ First letter of the string will be uppercase
 ```txt
   AmsifyHelper.showURL(path, page);
 ```
-First parameter could be absolute or relative path. When second parameter **page** as number is passed it will add extra string to url. Lets say path is **http://site.com/contact** and page no. is **1** then url appear in address bar will be **http://site.com/contact?page=1**
+First parameter could be absolute or relative path. When optional second parameter **page** as number is passed it will add extra string to url. Lets say path is **http://site.com/contact** and page no. is **1** then url appear in address bar will be **http://site.com/contact?page=1**
+
+### Show Flash Message
+```txt
+  AmsifyHelper.showFlash(message, type);
+```
+It will show flash message at top and will dissappear after couple of seconds. <br/>
+Second parameter can be any of three values <br/>
+**success** <br/>
+**error** <br/>
+**info** <br/>
