@@ -117,7 +117,50 @@ First parameter could be absolute or relative path. When optional second paramet
   AmsifyHelper.showFlash(message, type);
 ```
 It will show flash message at top and will dissappear after couple of seconds. <br/>
-Second parameter can be any of three values <br/>
+Second parameter can be any one of these three values <br/>
 **success** <br/>
 **error** <br/>
 **info** <br/>
+
+### Iterate Errors
+```txt
+  AmsifyHelper.iterateErrors(fields);
+```
+This will show errors in multiple fields, for form field errors you can check info on my other respository **jquery.amsify.form**. IterateErrors take fields parameter as array having key as field name and value as message. Below is the example.
+```js
+  {
+    name : 'Name is required',
+    email: 'Please enter valid email'
+  }
+```
+
+### Bytes to filesize
+```txt
+  AmsifyHelper.fileSize(bytes, decimals);
+```
+This will convert bytes to file size in MB, GB and so on based on its size. Second optional parameter is a decimal.
+
+### Short Name
+```txt
+  AmsifyHelper.shortFileName(name, limit, prefex);
+```
+This will trim the string based on limit passed in second parameter. Third parameter will add prefix to the string after trimming it.
+
+### Call Ajax
+```txt
+  AmsifyHelper.callAjax(method, params, config, type);
+```
+Here are the details of four parameters:<br/>
+**method** : It is the method action url we pass to ajax, it can be absolute or relative url.<br/>
+**params** : It is an object of parameters or form data.<br/>
+**config** : It is an object which contains multiple callback function if required.<br/>
+by default this method calls **success** and **error** callbacks, if you wish to add some other callback you can add among these name<br/>
+*beforeSend*<br/>
+*xhr* - this will run the XHR callback before ajax call<br/>
+*complete* - this will run the complete callback after ajax call<br/>
+*afterError* - this will run in success callback after error is being responded from server<br/>
+*afterResponseError* - this will run in error callback after error from server directly<br/>
+*afterSuccess* - this will run in success callback after success is being responded from server<br/>
+**type** : By default it is **post** method, if you want you can pass it as **GET** or some other valid method name.<br/>
+
+
