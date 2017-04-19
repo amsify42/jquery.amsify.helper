@@ -154,16 +154,18 @@ Here are the details of four parameters:<br/>
 **method** : It is the method action url we pass to ajax, it can be absolute or relative url.<br/>
 **params** : It is an object of parameters or form data.<br/>
 **type** : By default it is **post** method, if you want you can pass it as **GET** or some other valid method name.<br/>
-**config** : It is an object which contains multiple callback function if required.<br/>
-by default this method calls **success** and **error** callbacks.<br/>
+**config** : It is an object which contains multiple callback function if required. By default this method calls **success** and **error** callbacks.<br/>
 If you wish to add some other callback you can add among these name<br/>
-*beforeSend* - this will run the beforeSend callback before ajax call<br/>
-*xhr* - this will run the XHR callback before ajax call<br/>
-*complete* - this will run the complete callback after ajax call<br/>
-*afterError* - this will run in success callback after error is being responded from server<br/>
-*afterResponseError* - this will run in error callback after error from server directly<br/>
-*afterSuccess* - this will run in success callback after success is being responded from server<br/>
+```txt
+beforeSend - this will run the beforeSend callback before ajax call
+xhr - this will run the XHR callback before ajax call
+complete - this will run the complete callback after ajax call
+afterError - this will run in success callback after error is being responded from server
+afterResponseError - this will run in error callback after error from server directly
+afterSuccess - this will run in success callback after success is being responded from server
 example of config you can pass
+```
+Below is the config object example
 ```js
 {
   beforeSend : function(){
