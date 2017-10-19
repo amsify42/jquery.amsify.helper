@@ -2,27 +2,30 @@
  // http://www.amsify42.com
  (function(AmsifyHelper, $, undefined) {
 
-    /**
-     * assign the base url to public property which is accessible from outside
-     * @type {string}
-     */
-    var baseURL     = window.location.protocol+'//'+window.location.host;
 
-    /**
-     * assign the token url to public property which refresh token
-     * @type {string}
-     */
-    var tokenURL    = window.location.protocol+'//'+window.location.host+'/refresh/token';
+    var Helper = function () {
+        /**
+         * assign the base url to public property which is accessible from outside
+         * @type {string}
+         */
+        this.baseURL    = window.location.protocol+'//'+window.location.host;
+
+        /**
+         * assign the token url to public property which refresh token
+         * @type {string}
+         */
+        this.tokenURL   = this.baseURL+'/refresh/token';
+    };
 
     /**
      * collection of prototypes
      * @type {Object}
      */
-    AmsifyHelper.prototype = {
+    Helper.prototype = {
         /**
          * this function is called by default to add flash errors to html body at top
          */
-        _init           : function() {
+        _init : function() {
             this.setFlashMessage();
         },
 
@@ -31,12 +34,12 @@
          * @param  {string} urlString
          * @return {string}
          */
-        setBaseURL    : function(urlString) {
+        setBaseURL : function(urlString) {
             var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
             if(regexURL.test(urlString)) {
-                baseURL  = urlString;
+                this.baseURL  = urlString;
             } else {
-                baseURL += '/'+urlString;
+                this.baseURL += '/'+urlString;
             }
         },
 
@@ -45,24 +48,27 @@
          * @param  {string} urlString
          * @return {string}
          */
-        setTokenURL    : function(urlString) {
+        setTokenURL : function(urlString) {
             var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
             if(regexURL.test(urlString)) {
-                tokenURL  = urlString;
+                this.tokenURL  = urlString;
             } else {
-                tokenURL += '/'+urlString;
+                this.tokenURL  = this.tokenURL.replace('refresh/token', urlString);
             }
             this.setRefreshToken();
         },
 
+        /**
+         * set refresh token
+         */    
         setRefreshToken : function() {
             window.setInterval(function(){
                 var $metaToken = $('meta[name="_token"]');
                 $.post(tokenURL, {_token:$metaToken.attr('content')})
-                    .done(function(data) {
-                        if(data.status) {
-                            $metaToken.attr('content', data._token);
-                        }
+                .done(function(data) {
+                    if(data.status) {
+                        $metaToken.attr('content', data._token);
+                    }
                 });
             }, 7000);
         },
@@ -72,7 +78,7 @@
          * @param  {string} path
          * @return {string}
          */
-        AppUrl          : function(path) {
+        AppUrl : function(path) {
             var appUrl = this.baseURL;
             if(this.getLocale()) {
                 appUrl += '/'+this.getLocale();    
@@ -127,7 +133,7 @@
          * @return {string}
          */
         getActionURL : function(urlString) {
-            var URL       = baseURL;
+            var URL       = this.baseURL;
             var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
             if(regexURL.test(urlString)) {
                 URL = urlString;
@@ -328,7 +334,7 @@
             }
 
             if(appendMessages) {
-                var structure =    [
+                var structure =  [
                   {'<div/>': { 'class':'amsify-fixed-message '+msgClass, text:message }, 'prependTo': 'body'},
                   {'<span/>': { 'class':'amsify-message-close', 'text':'\u2716'}, 'appendTo': '.amsify-fixed-message'},
                 ];
@@ -348,9 +354,9 @@
               if(element !== undefined) {
                   $.each(element, function(key, tag){
                     if(key != 'appendTo' && key != 'prependTo') {
-                      $object = $(key, tag);
+                        $object = $(key, tag);
                     } else {
-                      $object[key](tag);
+                        $object[key](tag);
                     }
                   });
                 }
@@ -384,7 +390,7 @@
             }
             if(checkAttr && selector !== undefined && attr !== undefined) {
                 if($(selector).attr(attr)) {
-                  eval($(selector).attr(attr));
+                    eval($(selector).attr(attr));
                 }
             }
         },
@@ -416,44 +422,42 @@
             var result = [];
             // If css is bootstrap  
             if(type == 'bootstrap') {
-             result['basic'] = ' <span class="fa fa-sort"></span>';
+                result['basic'] = ' <span class="fa fa-sort"></span>';
+                var htmlArray   = rowHtml.split('class=');
+                var reqHtml     = $.trim(htmlArray[1]);
 
-             var htmlArray  = rowHtml.split('class=');
-             var reqHtml    = $.trim(htmlArray[1]);
-
-             if(reqHtml == '' || reqHtml == '"fa fa-sort"></span>') {
-              result['insertHtml'] = ' <span class="fa fa-sort-asc"></span>';
-              result['sort_type']  = 'asc';
-            } 
-            else if(reqHtml == '"fa fa-sort-asc"></span>') {
-              result['insertHtml'] = ' <span class="fa fa-sort-desc"></span>';
-              result['sort_type']  = 'desc';
-            } 
-            else {
-              result['insertHtml'] = ' <span class="fa fa-sort"></span>';
-              result['sort_type']  = 'default';
+                if(reqHtml == '' || reqHtml == '"fa fa-sort"></span>') {
+                    result['insertHtml'] = ' <span class="fa fa-sort-asc"></span>';
+                    result['sort_type']  = 'asc';
+                } 
+                else if(reqHtml == '"fa fa-sort-asc"></span>') {
+                    result['insertHtml'] = ' <span class="fa fa-sort-desc"></span>';
+                    result['sort_type']  = 'desc';
+                } 
+                else {
+                    result['insertHtml'] = ' <span class="fa fa-sort"></span>';
+                    result['sort_type']  = 'default';
+                }
             }
-
-          }
             // If css is simple or default
             else {
-              result['basic'] = ' <span class="sort-icon"><img src="'+baseURL+'/images/arrow-updown.png"></span>';
+              result['basic'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-updown.png"></span>';
               var htmlArray   = rowHtml.split('class="sort-icon">');
               var reqHtml     = $.trim(htmlArray[1]);
-              if(reqHtml == '' || reqHtml == '<img src="'+baseURL+'/images/arrow-updown.png"></span>') {
-                result['insertHtml'] = ' <span class="sort-icon"><img src="'+baseURL+'/images/arrow-up.png"></span>';
-                result['sort_type']  = 'asc';
-              } 
-              else if(reqHtml == '<img src="'+baseURL+'/images/arrow-up.png"></span>') {
-                result['insertHtml'] = ' <span class="sort-icon"><img src="'+baseURL+'/images/arrow-down.png"></span>';
-                result['sort_type']  = 'desc';
-              } 
-              else {
-                result['insertHtml'] = ' <span class="sort-icon"><img src="'+baseURL+'/images/arrow-updown.png"></span>';
-                result['sort_type']  = 'default';
-              }
+                if(reqHtml == '' || reqHtml == '<img src="'+this.baseURL+'/images/arrow-updown.png"></span>') {
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-up.png"></span>';
+                    result['sort_type']  = 'asc';
+                } 
+                else if(reqHtml == '<img src="'+this.baseURL+'/images/arrow-up.png"></span>') {
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-down.png"></span>';
+                    result['sort_type']  = 'desc';
+                } 
+                else {
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-updown.png"></span>';
+                    result['sort_type']  = 'default';
+                }
             }
-          return result;
+            return result;
         },
 
         /**
@@ -462,14 +466,14 @@
          * @param {stringe]} type
          */
         setDefaultSortIcon : function(sortSelector, type) {
-          var defaultIcon = ' <span class="sort-icon"><img src="'+baseURL+'/images/arrow-updown.png"></span>';
-          if(type == 'bootstrap') {
-            $(sortSelector).find('.fa').remove();
-            defaultIcon = ' <span class="fa fa-sort"></span>';      
-          } else {
-            $(sortSelector).find('.sort-icon').remove();
-          }
-          $(sortSelector).append(defaultIcon);
+            var defaultIcon = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-updown.png"></span>';
+            if(type == 'bootstrap') {
+                $(sortSelector).find('.fa').remove();
+                defaultIcon = ' <span class="fa fa-sort"></span>';      
+            } else {
+                $(sortSelector).find('.sort-icon').remove();
+            }
+            $(sortSelector).append(defaultIcon);
         },
 
         /**
@@ -479,12 +483,12 @@
          * @return {string}
          */
         fileSize : function(bytes, decimals) {
-           if(bytes == 0) return '0 Bytes';
-           var k      = 1000,
-               dm     = decimals + 1 || 3,
-               sizes  = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-               i      = Math.floor(Math.log(bytes) / Math.log(k));
-           return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            if(bytes == 0) return '0 Bytes';
+            var k   = 1000,
+            dm      = decimals + 1 || 3,
+            sizes   = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            i       = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         },
 
         /**
@@ -495,18 +499,18 @@
          * @return {string}
          */
         shortFileName : function(name, limit, prefex) {
-          var textLimit   = 15;
-          var textPrefex  = '...';
-          if(limit !== undefined) {
-            textLimit = limit;
-          }
-          if(prefex !== undefined) {
-            textPrefex = prefex;
-          }
-          if(name.length > textLimit) {
-            name = textPrefex+$.trim(name).substring(name.length - textLimit).trim(this);
-          }
-          return name;
+            var textLimit   = 15;
+            var textPrefex  = '...';
+            if(limit !== undefined) {
+                textLimit = limit;
+            }
+            if(prefex !== undefined) {
+                textPrefex = prefex;
+            }
+            if(name.length > textLimit) {
+                name = textPrefex+$.trim(name).substring(name.length - textLimit).trim(this);
+            }
+            return name;
         },
 
         /**
@@ -524,11 +528,12 @@
                 type = config.type;
             }
           }
-          var childrens    = $(selector).children();
+          var childrens     = $(selector).children();
+          var _self         = this;
           $.each(childrens, function(index, child){
             if(!$(child).find('.refresher').length && !$(child).hasClass('unsort')){
                 var tagName  = $(child).prop('tagName').toLowerCase();
-                $(child).children().first().prepend(AmsifyHelper.reorderImage(type));
+                $(child).children().first().prepend(_self.reorderImage(type));
             }
           });
           var config = {};
@@ -541,18 +546,17 @@
                 params['ids']   = [];
                 var children    = $(selector).sortable('refreshPositions').children();
                 $.each(children, function(index, child) {
-                  if($(child).attr(idAttr)) {
-                    params['ids'].push($(child).attr(idAttr));
-                  } 
-                  else if($(child).attr('id')) {
-                    params['ids'].push($(child).attr('id'));
-                  }
+                    if($(child).attr(idAttr)) {
+                        params['ids'].push($(child).attr(idAttr));
+                    } 
+                    else if($(child).attr('id')) {
+                        params['ids'].push($(child).attr('id'));
+                    }
                 });
-
                 config['beforeSend']    = function(){ $(selector).sortable('disable'); };
                 config['afterError']    = function(data){ $(selector).sortable('cancel'); };
                 config['complete']      = function(){ $(selector).sortable('enable'); };
-                AmsifyHelper.callAjax(method, params, config);
+                _self.callAjax(method, params, config);
               },
               helper : function(e, ui){ 
                     ui.children().each(function() {  
@@ -571,7 +575,7 @@
          * @return {string}
          */
         reorderImage : function(type){
-            var moveImage       = '<img class="refresher" src="'+baseURL+'/images/move.png"/>';
+            var moveImage   = '<img class="refresher" src="'+this.baseURL+'/images/move.png"/>';
             if(type == 'bootstrap') {
                 moveImage = '<a class="refresher"><span class="fa fa-arrows"></span></a>';
             } else if(type == 'materialize') {
@@ -620,7 +624,7 @@
                 if(config.complete !== undefined && typeof config.complete == "function") {
                     ajaxFormParams['complete'] = config.complete;
                 }
-            };  
+            }  
 
             ajaxFormParams['success'] = function(data) {
                 if(data['status'] !== undefined) {
@@ -684,7 +688,6 @@
          */
         onlyNumbers  : function(selector) {
          $(selector).on('keyup focusout', function(e) {
-            //e.stopImmediatePropagation();
             this.value = this.value.replace(/[^0-9]/g,'');
          });
         },
@@ -695,7 +698,7 @@
          */
         noSpecialChar : function(selector) {
           $(selector).on('keyup focusout', function(e) {
-           if(e.which === 32)
+            if(e.which === 32)
             return false;
             this.value = this.value.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, ' ');
           });
@@ -706,9 +709,9 @@
          * @param  {selector} selector
          */
         singleSpace : function(selector) {
-          $(selector).on('keyup focusout', function(e) {
-            this.value = this.value.replace(/\s+/g, " ");
-          });
+            $(selector).on('keyup focusout', function(e) {
+                this.value = this.value.replace(/\s+/g, " ");
+            });
         },
 
         /**
@@ -716,16 +719,15 @@
          * @param  {selector} selector
          */
         noSpace : function(selector) {
-          $(selector).on('keyup focusout', function(e){
-            //e.stopImmediatePropagation();
-            if (e.which === 32) {
-              e.preventDefault();      
-            }
-            $(this).val(function(i,oldVal){ return oldVal.replace(/\s/g,''); });         
-          }).blur(function() {
-            // for variety's sake here's another way to remove the spaces:
-            $(this).val(function(i,oldVal){ return oldVal.replace(/\s/g,''); });         
-          });
+            $(selector).on('keyup focusout', function(e){
+                if (e.which === 32) {
+                    e.preventDefault();    
+                }
+                $(this).val(function(i,oldVal){ return oldVal.replace(/\s/g,''); });         
+            }).blur(function(){
+                // for variety's sake here's another way to remove the spaces:
+                $(this).val(function(i,oldVal){ return oldVal.replace(/\s/g,''); });         
+            });
         },
 
         /**
@@ -735,85 +737,85 @@
          * @param  {string} type
          */
         mask : function(selector, pattern, type) {
-          $(selector).on('keyup focusout', function(e) {
-            var key = e.charCode || e.keyCode || 0;
-            // If not backspace
-            if(key != 8) {
-
-              // Setting default and assigning input type if defined
-              var inputType = 'numbers';
-              var types     = ['numbers', 'alphabets', 'alphanumeric'];
-              if(type !== undefined) {
-                if(jQuery.inArray(type, types) != -1) {
-                    inputType = type;
-                }
-              }
-
-              // If pattern is defined
-              if(pattern !== undefined) {
-                var transformValue     = $.trim($(this).val());
-                // Trim value if its exceeding pattern length and return 
-                if(transformValue.length > pattern.length) {
-                  transformValue = transformValue.substr(0, pattern.length);
-                  $(this).val(transformValue);
-                  return false;
-                }
-
-                // Collect [Pattern Special Chars] and [AlphaNumeric] in arrays
-                var alphaNumericPositions     = []; 
-                var specialCharPositions      = [];
-                for(var i = 0, len = pattern.length; i < len; i++) {
-                  if(pattern[i].match(/[0-9a-z]/i)) {
-                    alphaNumericPositions.push(i);
-                  } else {
-                    specialCharPositions.push(i);
-                  }
-                }
-
-                // Check for Input types
-                var notAllowed = false;
-                for(var i = 0, len = transformValue.length; i < len; i++) {
-                  if(inputType == 'numbers' && !transformValue[i].match(/[0-9]/i) && transformValue[i] != pattern[i]) {
-                    notAllowed = true;
-                  }
-                  else if(inputType == 'alphabets' && !transformValue[i].match(/[a-z]/i) && transformValue[i] != pattern[i]) {
-                    notAllowed = true;
-                  }
-                  else if(inputType == 'alphanumeric' && !transformValue[i].match(/[0-9a-z]/i) && transformValue[i] != pattern[i]) {
-                    notAllowed = true;
-                  }
-
-                  // If input is not allowed, replace it with empty value
-                  if(notAllowed) {
-                    $(this).val(AmsifyHelper.replaceAt(transformValue, '', i));
-                    return false;
-                  }
-                }
-
-                // Replaced char with special chars by moving characters further
-                for(var i = 0, len = pattern.length; i < len; i++) {
-                  if(i < transformValue.length) {
-                    if($.inArray(i, specialCharPositions) != -1) {
-                      if(transformValue[i] != pattern[i]) {
-                        var specialChars    = AmsifyHelper.getPreceedingSpecialChars(i, pattern, specialCharPositions);
-                        var replacedString  = specialChars+''+transformValue[i];
-                        transformValue      = AmsifyHelper.replaceAt(transformValue, replacedString, i);
-                      }
+            var _self = this;
+            $(selector).on('keyup focusout', function(e){
+                var key = e.charCode || e.keyCode || 0;
+                // If not backspace
+                if(key != 8) {
+                    // Setting default and assigning input type if defined
+                    var inputType = 'numbers';
+                    var types     = ['numbers', 'alphabets', 'alphanumeric'];
+                    if(type !== undefined) {
+                        if(jQuery.inArray(type, types) != -1) {
+                            inputType = type;
+                        }
                     }
-                  }
-                }
 
-                // Again Check for succeeding special chars from the end
-                var specialChar = AmsifyHelper.getPreceedingSpecialChars(transformValue.length, pattern, specialCharPositions);
-                if(specialChar != '') {
-                  transformValue += specialChar;
-                }
+                    // If pattern is defined
+                    if(pattern !== undefined) {
+                        var transformValue     = $.trim($(this).val());
+                        // Trim value if its exceeding pattern length and return 
+                        if(transformValue.length > pattern.length) {
+                            transformValue = transformValue.substr(0, pattern.length);
+                            $(this).val(transformValue);
+                            return false;
+                        }
 
-                // Set Mask Transformed value
-                $(this).val(transformValue);
-              }
-            }
-          });
+                        // Collect [Pattern Special Chars] and [AlphaNumeric] in arrays
+                        var alphaNumericPositions     = []; 
+                        var specialCharPositions      = [];
+                        for(var i = 0, len = pattern.length; i < len; i++) {
+                            if(pattern[i].match(/[0-9a-z]/i)) {
+                                alphaNumericPositions.push(i);
+                            } else {
+                                specialCharPositions.push(i);
+                            }
+                        }
+
+                        // Check for Input types
+                        var notAllowed = false;
+                        for(var i = 0, len = transformValue.length; i < len; i++) {
+                            if(inputType == 'numbers' && !transformValue[i].match(/[0-9]/i) && transformValue[i] != pattern[i]) {
+                                notAllowed = true;
+                            }
+                            else if(inputType == 'alphabets' && !transformValue[i].match(/[a-z]/i) && transformValue[i] != pattern[i]) {
+                                notAllowed = true;
+                            }
+                            else if(inputType == 'alphanumeric' && !transformValue[i].match(/[0-9a-z]/i) && transformValue[i] != pattern[i]) {
+                                notAllowed = true;
+                            }
+
+                            // If input is not allowed, replace it with empty value
+                            if(notAllowed) {
+                                $(this).val(_self.replaceAt(transformValue, '', i));
+                                return false;
+                            }
+                        }
+
+                        // Replaced char with special chars by moving characters further
+                        for(var i = 0, len = pattern.length; i < len; i++) {
+                            if(i < transformValue.length) {
+                                if($.inArray(i, specialCharPositions) != -1) {
+                                    if(transformValue[i] != pattern[i]) {
+                                        var specialChars    = _self.getPreceedingSpecialChars(i, pattern, specialCharPositions);
+                                        var replacedString  = specialChars+''+transformValue[i];
+                                        transformValue      = _self.replaceAt(transformValue, replacedString, i);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Again Check for succeeding special chars from the end
+                        var specialChar = _self.getPreceedingSpecialChars(transformValue.length, pattern, specialCharPositions);
+                        if(specialChar != '') {
+                            transformValue += specialChar;
+                        }
+
+                        // Set Mask Transformed value
+                        $(this).val(transformValue);
+                    }
+                }
+            });
         },
 
         /**
@@ -824,16 +826,16 @@
          * @return {string}
          */
         getPreceedingSpecialChars : function(position, pattern, specialCharPositions) {
-          var string = '';
-          for(var i = position, len = pattern.length; i < len; i++) { 
-            if($.inArray(i, specialCharPositions) == -1) {
-             break;
-           }
-           else if($.inArray(i, specialCharPositions) > -1) {
-             string += pattern[i];
-           }
-          }
-          return string;
+            var string = '';
+            for(var i = position, len = pattern.length; i < len; i++) { 
+                if($.inArray(i, specialCharPositions) == -1) {
+                    break;
+                }
+                else if($.inArray(i, specialCharPositions) > -1) {
+                    string += pattern[i];
+                }
+            }
+            return string;
         },
 
         /**
@@ -844,9 +846,14 @@
          * @return {string}
          */
         replaceAt : function(string, replace, index) {
-          return string.substr(0, index) + replace + string.substr(index + 1);
+            return string.substr(0, index) + replace + string.substr(index + 1);
         },
 
     };
+
+    /**
+     * Initializing the helper
+     */
+    window.AmsifyHelper = new Helper();
 
  }(window.AmsifyHelper = window.AmsifyHelper || {}, jQuery));
