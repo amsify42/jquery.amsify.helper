@@ -8,13 +8,12 @@
          * assign the base url to public property which is accessible from outside
          * @type {string}
          */
-        this.baseURL    = window.location.protocol+'//'+window.location.host;
-
+        this.baseURL        = window.location.protocol+'//'+window.location.host;
         /**
          * assign the token url to public property which refresh token
          * @type {string}
          */
-        this.tokenURL   = this.baseURL+'/refresh/token';
+        this.tokenURL       = this.baseURL+'/refresh/token';
     };
 
     /**
@@ -35,11 +34,10 @@
          * @return {string}
          */
         setBaseURL : function(urlString) {
-            var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
-            if(regexURL.test(urlString)) {
+            if(this.isAbsoluteURL(urlString)) {
                 this.baseURL  = urlString;
             } else {
-                this.baseURL += '/'+urlString;
+                this.baseURL += '/'+this.trimPath(urlString);
             }
         },
 
@@ -49,11 +47,10 @@
          * @return {string}
          */
         setTokenURL : function(urlString) {
-            var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
-            if(regexURL.test(urlString)) {
+            if(this.isAbsoluteURL(urlString)) {
                 this.tokenURL  = urlString;
             } else {
-                this.tokenURL  = this.tokenURL.replace('refresh/token', urlString);
+                this.tokenURL  = this.baseURL+'/'+this.trimPath(urlString);
             }
             this.setRefreshToken();
         },
@@ -83,8 +80,17 @@
             if(this.getLocale()) {
                 appUrl += '/'+this.getLocale();    
             }
-            appUrl += '/'+path;
+            appUrl += '/'+this.trimPath(path);;
             return appUrl;
+        },
+
+        /**
+         * remove first forward slash from string
+         * @param  {string} path
+         * @return {string}
+         */
+        trimPath : function(path) {
+            return path.replace(/^\/|\/$/g, '');
         },
 
         /**
@@ -133,14 +139,26 @@
          * @return {string}
          */
         getActionURL : function(urlString) {
-            var URL       = this.baseURL;
-            var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
-            if(regexURL.test(urlString)) {
+            var URL = this.baseURL;
+            if(this.isAbsoluteURL(urlString)) {
                 URL = urlString;
             } else {
-                URL += '/'+urlString;
+                URL = this.AppUrl(urlString);
             }
             return URL;
+        },
+
+        /**
+         * check if the string is absolute URL
+         * @param  {string}  urlString
+         * @return {Boolean}
+         */
+        isAbsoluteURL : function(urlString) {
+            var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
+            if(regexURL.test(urlString)) {
+                return true;
+            }
+            return false;
         },
 
         /**
@@ -209,17 +227,17 @@
                             });
                         }
                     }
-              } else {
+            } else {
                 formData = $(formSelector).serialize();
-                    // adding custom fields
-                    if(extraFields !== undefined) {
-                        if(getObjectSize(extraFields) > 0) {
-                            $.each(extraFields, function(key, val) {
-                                formData += '&'+key+'='+val; 
-                            });
-                        }
+                // adding custom fields
+                if(extraFields !== undefined) {
+                    if(getObjectSize(extraFields) > 0) {
+                        $.each(extraFields, function(key, val) {
+                            formData += '&'+key+'='+val; 
+                        });
                     }
-              }
+                }
+            }
             return formData;  
         },
 
@@ -591,10 +609,10 @@
          * @param  {object} config
          * @param  {string} type
          */
-        callAjax : function(method, params, config, type) {
-
-            var actionType = 'POST';
-
+        callAjax : function(method, params, config, type, flash) {
+            var _self       = this;
+            var actionType  = 'POST';
+            var isFlash     = (flash)? flash : false;
             if(type !== undefined && type != '') {
                 actionType = type;
             }
@@ -608,6 +626,7 @@
                 url     : this.getActionURL(method),
                 data    : params,
             };
+
             if($.trim(actionType) == 'post') {
                 ajaxFormParams['processData']   = false; 
                 ajaxFormParams['cache']         = false;
@@ -626,21 +645,19 @@
                 }
             }  
 
-            ajaxFormParams['success'] = function(data) {
-                if(data['status'] !== undefined) {
-                  if(data['status'] == 'error') {
-                    this.showFlash(data['message'], 'error');
+            ajaxFormParams['success'] = (function(data) {
+                if(data.status !== undefined) {
+                  if(data.status == 'error') {
+                    if(isFlash) _self.showFlash(data.message, 'error');
                     if(config !== undefined) {      
                         if(config.afterError !== undefined && typeof config.afterError == "function") {
                             config.afterError(data);
                         }
                     }
-                  } else if(data['status'] == 'errors') {
-                    this.iterateErrors(data['message']);
-                  } else if(data['status'] == 'info') {
-                    this.iterateErrors(data['message'], 'info');
+                  } else if(data.status == 'info') {
+                    if(isFlash) _self.showFlash(data.message, 'info');
                   } else {
-                    this.showFlash(data['message'], 'success');
+                    if(isFlash) _self.showFlash(data.message, 'success');
                     if(config !== undefined) {
                         if(config.afterSuccess !== undefined && typeof config.afterSuccess == "function") {
                             config.afterSuccess(data);
@@ -648,16 +665,16 @@
                     }
                   } 
                 }
-            };
+            }).bind(_self);
 
-            ajaxFormParams['error'] = function(data) {
-                this.showFlash(data.status+':'+data.statusText, 'error');
+            ajaxFormParams['error'] = (function(data) {
+                _self.showFlash(data.status+':'+data.statusText, 'error');
                 if(config !== undefined) {
-                    if(config.afterResponseError !== undefined && typeof config.afterResponseError == "function") {
-                        config.afterResponseError(data);
+                    if(config.afterServerError !== undefined && typeof config.afterServerError == "function") {
+                        config.afterServerError(data);
                     }
                 }
-            };
+            }).bind(_self);
 
             $.ajax(ajaxFormParams);
         },
