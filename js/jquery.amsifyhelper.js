@@ -617,8 +617,12 @@
                 actionType = type;
             }
 
-            if(params._token === undefined) {
-                params['_token'] = this.getToken();
+            if(!params.hasOwnProperty('_token')) {
+                if(params instanceof FormData) {
+                    params.append('_token', this.getToken());
+                } else {
+                    params['_token'] = this.getToken();
+                }
             }
 
             var ajaxFormParams = {
@@ -627,7 +631,7 @@
                 data    : params,
             };
 
-            if($.trim(actionType) == 'post') {
+            if($.trim(actionType).toLowerCase() == 'post') {
                 ajaxFormParams['processData']   = false; 
                 ajaxFormParams['cache']         = false;
                 if(!this.detectIE()) { ajaxFormParams['contentType'] = false; }
