@@ -876,5 +876,6 @@
      * Initializing the helper
      */
     window.AmsifyHelper = new Helper();
+    window.AmsifyHelper._init();
 
  }(window.AmsifyHelper = window.AmsifyHelper || {}, jQuery));
