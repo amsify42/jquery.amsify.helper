@@ -307,10 +307,11 @@
          * @param  {string} type
          */
         showFlash : function(message, type) {
-            if(message !== undefined) {            
+            if(message !== undefined) {  
+                var _self = this;          
                 if($('.amsify-fixed-message').length && $('.amsify-fixed-message').css('display') == 'block') {
                     $('.amsify-fixed-message').slideUp('fast', function(){
-                        this.checkMessage(message, type);
+                        _self.checkMessage(message, type);
                         $('.amsify-fixed-message').slideDown();
                         setTimeout(function(){ $('.amsify-fixed-message').slideUp();}, 5000);
                     });
