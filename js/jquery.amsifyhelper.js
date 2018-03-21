@@ -541,11 +541,11 @@
         * @param {object}   config
         */
         setDraggableSort : function(selector, method, idAttr, params, config) {
-          var type = 'amsify'
+          var type  = 'amsify';
+          var flash = false;
           if(config !== undefined) {
-            if(config.type !== undefined) {
-                type = config.type;
-            }
+            type    = (config.type)? config.type: type;
+            flash   = (config.flash)? config.flash: flash;
           }
           var childrens     = $(selector).children();
           var _self         = this;
@@ -575,7 +575,7 @@
                 config['beforeSend']    = function(){ $(selector).sortable('disable'); };
                 config['afterError']    = function(data){ $(selector).sortable('cancel'); };
                 config['complete']      = function(){ $(selector).sortable('enable'); };
-                _self.callAjax(method, params, config);
+                _self.callAjax(method, params, config, 'POST', flash);
               },
               helper : function(e, ui){ 
                     ui.children().each(function() {  
@@ -612,11 +612,8 @@
          */
         callAjax : function(method, params, config, type, flash) {
             var _self       = this;
-            var actionType  = 'POST';
+            var actionType  = (type)? type : 'POST';
             var isFlash     = (flash)? flash : false;
-            if(type !== undefined && type != '') {
-                actionType = type;
-            }
 
             if(!params.hasOwnProperty('_token')) {
                 if(params instanceof FormData) {
