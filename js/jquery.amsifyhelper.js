@@ -14,6 +14,16 @@
          * @type {string}
          */
         this.tokenURL       = this.baseURL+'/refresh/token';
+        /**
+         * assets urls
+         * @type {Object}
+         */
+        this.assets         = {
+            move        : 'images/move.png',
+            arrowUp     : 'images/arrow-up.png',
+            arrowDown   : 'images/arrow-down.png',
+            arrowUpDown : 'images/arrow-updown.png',
+        };
     };
 
     /**
@@ -159,6 +169,24 @@
                 return true;
             }
             return false;
+        },
+
+        /**
+         * Set Asset URL
+         * @param {string} name
+         * @param {string} value
+         */
+        setAssetURL : function(name, value) {
+            this.assets[name] = value;
+        },
+
+        /**
+         * Get Asset URL
+         * @param  {string} name
+         * @return {string}
+         */
+        getAssetURL : function(name) {
+            return (this.assets[name])? this.AppUrl(this.assets[name]): this.baseURL;
         },
 
         /**
@@ -460,19 +488,19 @@
             }
             // If css is simple or default
             else {
-              result['basic'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-updown.png"></span>';
+              result['basic'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUpDown')+'"></span>';
               var htmlArray   = rowHtml.split('class="sort-icon">');
               var reqHtml     = $.trim(htmlArray[1]);
-                if(reqHtml == '' || reqHtml == '<img src="'+this.baseURL+'/images/arrow-updown.png"></span>') {
-                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-up.png"></span>';
+                if(reqHtml == '' || reqHtml == '<img src="'+this.getAssetURL('arrowUpDown')+'"></span>') {
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUp')+'"></span>';
                     result['sort_type']  = 'asc';
                 } 
-                else if(reqHtml == '<img src="'+this.baseURL+'/images/arrow-up.png"></span>') {
-                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-down.png"></span>';
+                else if(reqHtml == '<img src="'+this.getAssetURL('arrowUp')+'"></span>') {
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowDown')+'"></span>';
                     result['sort_type']  = 'desc';
                 } 
                 else {
-                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-updown.png"></span>';
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUpDown')+'"></span>';
                     result['sort_type']  = 'default';
                 }
             }
@@ -485,7 +513,7 @@
          * @param {stringe]} type
          */
         setDefaultSortIcon : function(sortSelector, type) {
-            var defaultIcon = ' <span class="sort-icon"><img src="'+this.baseURL+'/images/arrow-updown.png"></span>';
+            var defaultIcon = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUpDown')+'"></span>';
             if(type == 'bootstrap') {
                 $(sortSelector).find('.fa').remove();
                 defaultIcon = ' <span class="fa fa-sort"></span>';      
@@ -594,7 +622,7 @@
          * @return {string}
          */
         reorderImage : function(type){
-            var moveImage   = '<img class="refresher" src="'+this.baseURL+'/images/move.png"/>';
+            var moveImage   = '<img class="refresher" src="'+this.getAssetURL('move')+'"/>';
             if(type == 'bootstrap') {
                 moveImage = '<a class="refresher"><span class="fa fa-arrows"></span></a>';
             } else if(type == 'materialize') {
