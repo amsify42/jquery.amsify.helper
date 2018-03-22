@@ -606,7 +606,6 @@
             flash   = (config.flash)? config.flash: flash;
           }
           var childrens     = $(selector).children();
-          var _self         = this;
           $.each(childrens, function(index, child){
             if(!$(child).find(_self.reorder.class).length && !$(child).hasClass(_self.reorder.unsort.substring(1))){
                 var tagName  = $(child).prop('tagName').toLowerCase();
@@ -669,7 +668,6 @@
          * @param  {string} type
          */
         callAjax : function(method, params, config, type, flash) {
-            var _self       = this;
             var actionType  = (type)? type : 'POST';
             var isFlash     = (flash)? flash : false;
 
@@ -687,12 +685,12 @@
                 data    : params,
             };
 
-            if($.trim(actionType).toLowerCase() == 'post') {
+            if(params instanceof FormData && $.trim(actionType).toLowerCase() == 'post' && !this.detectIE()) {
                 ajaxFormParams['processData']   = false; 
                 ajaxFormParams['cache']         = false;
-                if(!this.detectIE()) { ajaxFormParams['contentType'] = false; }
+                ajaxFormParams['contentType']   = false;
             }
-
+            
             if(config !== undefined) {
                 if(config.beforeSend !== undefined && typeof config.beforeSend == "function") {
                     ajaxFormParams['beforeSend'] = config.beforeSend;
