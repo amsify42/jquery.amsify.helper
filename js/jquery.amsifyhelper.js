@@ -1,9 +1,20 @@
  // Amsify42 Helper 2.0.0
  // http://www.amsify42.com
  (function(AmsifyHelper, $, undefined) {
-
-
-    var Helper = function () {
+    /**
+     * Global variable for this object context
+     */
+    var _self;
+    /**
+     * initialization begins from here
+     * @type {Object}
+     */
+    var Helper  = function () {
+        /**
+         * Assigning this context to _self
+         * @type {object}
+         */
+        _self               = this;
         /**
          * assign the base url to public property which is accessible from outside
          * @type {string}
@@ -23,6 +34,30 @@
             arrowUp     : 'images/arrow-up.png',
             arrowDown   : 'images/arrow-down.png',
             arrowUpDown : 'images/arrow-updown.png',
+        };
+        /**
+         * flash message info
+         * @type {Object}
+         */
+        this.flashMessage   = {
+            class : '.amsify-fixed-message',
+            close : '.amsify-message-close',
+        };
+        /**
+         * loader classes
+         * @type {Object}
+         */
+        this.loaders        = {
+            modal   : '.modal-body-loader',
+            section : '.section-body-loader',
+        };
+        /**
+         * reorder info
+         * @type {Object}
+         */
+        this.reorder        = {
+            class   : '.refresher',
+            unsort  : '.unsort',
         };
     };
 
@@ -71,7 +106,7 @@
         setRefreshToken : function() {
             window.setInterval(function(){
                 var $metaToken = $('meta[name="_token"]');
-                $.post(tokenURL, {_token:$metaToken.attr('content')})
+                $.post(this.tokenURL, {_token:$metaToken.attr('content')})
                 .done(function(data) {
                     if(data.status) {
                         $metaToken.attr('content', data._token);
@@ -165,10 +200,7 @@
          */
         isAbsoluteURL : function(urlString) {
             var regexURL  = new RegExp('^(?:[a-z]+:)?//', 'i');
-            if(regexURL.test(urlString)) {
-                return true;
-            }
-            return false;
+            return (regexURL.test(urlString))? true: false;
         },
 
         /**
@@ -202,9 +234,7 @@
             if(submitSelector !== undefined && defaultText !== undefined) {
                 $submitSelector.prop('disabled', false).html(defaultText); 
             }
-            if(ret !== undefined) {
-                return ret;
-            }
+            if(ret !== undefined) return ret;
         },
 
         /**
@@ -214,24 +244,21 @@
         detectIE : function() {
             var ua      = window.navigator.userAgent;
             var msie    = ua.indexOf('MSIE ');
-            if (msie > 0) {
+            if(msie > 0) {
                 // IE 10 or older => return version number
                 return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
             }
-
             var trident = ua.indexOf('Trident/');
-            if (trident > 0) {
+            if(trident > 0) {
                 // IE 11 => return version number
                 var rv = ua.indexOf('rv:');
                 return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
             }
-
             var edge = ua.indexOf('Edge/');
-            if (edge > 0) {
+            if(edge > 0) {
                // IE 12 => return version number
                return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
             }
-
             // other browser
             return false;
         },
@@ -245,7 +272,7 @@
          */
         getFormData : function(formSelector, serialize, extraFields) {
             var formData;
-            if(!this.detectIE() && (serialize === undefined || serialize === false)) {
+            if(!this.detectIE() && !serialize) {
                 formData = new FormData($(formSelector)[0]); 
                     // adding custom fields
                     if(extraFields !== undefined) {
@@ -335,18 +362,17 @@
          * @param  {string} type
          */
         showFlash : function(message, type) {
-            if(message !== undefined) {  
-                var _self = this;          
-                if($('.amsify-fixed-message').length && $('.amsify-fixed-message').css('display') == 'block') {
-                    $('.amsify-fixed-message').slideUp('fast', function(){
+            if(message !== undefined) {
+                if($(_self.flashMessage.class).length && $(_self.flashMessage.class).css('display') == 'block') {
+                    $(_self.flashMessage.class).slideUp('fast', function(){
                         _self.checkMessage(message, type);
-                        $('.amsify-fixed-message').slideDown();
-                        setTimeout(function(){ $('.amsify-fixed-message').slideUp();}, 5000);
+                        $(_self.flashMessage.class).slideDown();
+                        setTimeout(function(){ $(_self.flashMessage.class).slideUp();}, 5000);
                     });
                 } else {
                     this.checkMessage(message, type);
-                    $('.amsify-fixed-message').slideDown();
-                    setTimeout(function(){ $('.amsify-fixed-message').slideUp();}, 5000);
+                    $(_self.flashMessage.class).slideDown();
+                    setTimeout(function(){ $(_self.flashMessage.class).slideUp();}, 5000);
                 }
             }
         },
@@ -371,23 +397,23 @@
             }
             var appendMessages = false;
             if(this.detectIE()) {
-               if($('.amsify-fixed-message').html() === undefined) {
+               if($(_self.flashMessage.class).html() === undefined) {
                     appendMessages = true;
                }     
             } else {
-                if(!$('.amsify-fixed-message').length) {
+                if(!$(_self.flashMessage.class).length) {
                     appendMessages = true;
                 }    
             }
 
             if(appendMessages) {
                 var structure =  [
-                  {'<div/>': { 'class':'amsify-fixed-message '+msgClass, text:message }, 'prependTo': 'body'},
-                  {'<span/>': { 'class':'amsify-message-close', 'text':'\u2716'}, 'appendTo': '.amsify-fixed-message'},
+                  {'<div/>': { 'class':_self.flashMessage.class.substring(1)+' '+msgClass, text:message }, 'prependTo': 'body'},
+                  {'<span/>': { 'class':_self.flashMessage.close.substring(1), 'text':'\u2716'}, 'appendTo': _self.flashMessage.class},
                 ];
                 this.addHTML(structure);
             } else {
-                $('.amsify-fixed-message').attr('class', 'amsify-fixed-message '+msgClass).html(message+'<span class="amsify-message-close">X</span>');
+                $(_self.flashMessage.class).attr('class', _self.flashMessage.class.substring(1)+' '+msgClass).html(message+'<span class="'+_self.flashMessage.close.substring(1)+'">X</span>');
             }
         },
 
@@ -414,8 +440,8 @@
          * create click hide message event
          */
         setFlashMessage : function() {
-            $(document).on('click', '.amsify-message-close', function(){
-                $(this).parent('.amsify-fixed-message').slideUp();
+            $(document).on('click', _self.flashMessage.close, function(){
+                $(this).parent(_self.flashMessage.class).slideUp();
             });
         },
 
@@ -448,12 +474,10 @@
          */
         bodyLoaderIEfix : function(type) {
             if(this.detectIE()) {
-                if(type !== undefined) {
-                    if(type == 'modal') {
-                        $('.modal-body-loader').css({'top':'0', 'left':'0'});
-                    }
+                if(type !== undefined && type == 'modal') {
+                    $(this.loaders.modal).css({'top':'0', 'left':'0'});
                 } else {
-                    $('.section-body-loader').css({'top':'0', 'left':'0'});
+                    $(this.loaders.section).css({'top':'0', 'left':'0'});
                 }
             }
         },
@@ -473,36 +497,42 @@
                 var htmlArray   = rowHtml.split('class=');
                 var reqHtml     = $.trim(htmlArray[1]);
 
-                if(reqHtml == '' || reqHtml == '"fa fa-sort"></span>') {
+                if(rowSearchInput) {
+                    result['insertHtml'] = ' <span class="fa fa-sort"></span>';
+                    result['sort_type']  = 'default';
+                }
+                else if(reqHtml == '' || reqHtml == '"fa fa-sort"></span>') {
                     result['insertHtml'] = ' <span class="fa fa-sort-asc"></span>';
                     result['sort_type']  = 'asc';
                 } 
                 else if(reqHtml == '"fa fa-sort-asc"></span>') {
                     result['insertHtml'] = ' <span class="fa fa-sort-desc"></span>';
                     result['sort_type']  = 'desc';
-                } 
-                else {
+                } else {
                     result['insertHtml'] = ' <span class="fa fa-sort"></span>';
                     result['sort_type']  = 'default';
-                }
+                } 
             }
             // If css is simple or default
             else {
               result['basic'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUpDown')+'"></span>';
               var htmlArray   = rowHtml.split('class="sort-icon">');
               var reqHtml     = $.trim(htmlArray[1]);
-                if(reqHtml == '' || reqHtml == '<img src="'+this.getAssetURL('arrowUpDown')+'"></span>') {
+                if(rowSearchInput) {
+                    result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUpDown')+'"></span>';
+                    result['sort_type']  = 'default';
+                }
+                else if(reqHtml == '' || reqHtml == '<img src="'+this.getAssetURL('arrowUpDown')+'"></span>') {
                     result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUp')+'"></span>';
                     result['sort_type']  = 'asc';
                 } 
                 else if(reqHtml == '<img src="'+this.getAssetURL('arrowUp')+'"></span>') {
                     result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowDown')+'"></span>';
                     result['sort_type']  = 'desc';
-                } 
-                else {
+                } else {
                     result['insertHtml'] = ' <span class="sort-icon"><img src="'+this.getAssetURL('arrowUpDown')+'"></span>';
-                    result['sort_type']  = 'default';
-                }
+                    result['sort_type']  = 'default';   
+                } 
             }
             return result;
         },
@@ -578,7 +608,7 @@
           var childrens     = $(selector).children();
           var _self         = this;
           $.each(childrens, function(index, child){
-            if(!$(child).find('.refresher').length && !$(child).hasClass('unsort')){
+            if(!$(child).find(_self.reorder.class).length && !$(child).hasClass(_self.reorder.unsort.substring(1))){
                 var tagName  = $(child).prop('tagName').toLowerCase();
                 $(child).children().first().prepend(_self.reorderImage(type));
             }
@@ -587,8 +617,8 @@
           $(function() {
             $(selector).sortable({
               placeholder   : 'ui-state-highlight',
-              handle        : '.refresher',
-              cancel        : '.unsort',
+              handle        : _self.reorder.class,
+              cancel        : _self.reorder.unsort,
               stop          : function(event, ui) {
                 params['ids']   = [];
                 var children    = $(selector).sortable('refreshPositions').children();
@@ -622,13 +652,13 @@
          * @return {string}
          */
         reorderImage : function(type){
-            var moveImage   = '<img class="refresher" src="'+this.getAssetURL('move')+'"/>';
             if(type == 'bootstrap') {
-                moveImage = '<a class="refresher"><span class="fa fa-arrows"></span></a>';
+                return '<a class="'+_self.reorder.class.substring(1)+'"><span class="fa fa-arrows"></span></a>';
             } else if(type == 'materialize') {
-                moveImage = '<a class="refresher"><span class="material-icons">open_with</span></a>';
+                return '<a class="'+_self.reorder.class.substring(1)+'"><span class="material-icons">open_with</span></a>';
+            } else {
+                return '<img class="'+_self.reorder.class.substring(1)+'" src="'+this.getAssetURL('move')+'"/>';
             }
-            return moveImage;
         },
 
         /**
@@ -784,7 +814,6 @@
          * @param  {string} type
          */
         mask : function(selector, pattern, type) {
-            var _self = this;
             $(selector).on('keyup focusout', function(e){
                 var key = e.charCode || e.keyCode || 0;
                 // If not backspace
