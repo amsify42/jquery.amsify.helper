@@ -26,6 +26,16 @@
          */
         this.tokenURL       = this.baseURL+'/refresh/token';
         /**
+         * Token meta name
+         * @type {string}
+         */
+        this.tokenMetaName  = '_token';
+        /**
+         * Locale meta name
+         * @type {string}
+         */
+        this.localeMetaName = '_locale';
+        /**
          * assets urls
          * @type {Object}
          */
@@ -87,6 +97,22 @@
         },
 
         /**
+         * set token meta tag name
+         * @param  {string} name
+         */
+        setTokenMetaName : function(name) {
+            this.tokenMetaName = name;
+        },
+
+        /**
+         * set locale meta tag name
+         * @param  {string} name
+         */
+        setLocaleMetaName : function(name) {
+            this.localeMetaName = name;
+        },
+
+        /**
          * set token url
          * @param  {string} urlString
          * @return {string}
@@ -105,7 +131,7 @@
          */    
         setRefreshToken : function() {
             window.setInterval(function(){
-                var $metaToken = $('meta[name="_token"]');
+                var $metaToken = $('meta[name="'+_self.tokenMetaName+'"]');
                 $.post(this.tokenURL, {_token:$metaToken.attr('content')})
                 .done(function(data) {
                     if(data.status) {
@@ -143,7 +169,7 @@
          * @return {string}
          */
         getLocale : function(path) {
-            return $('meta[name="_locale"]').attr('content')
+            return $('meta[name="'+this.localeMetaName+'"]').attr('content')
         },
 
         /**
@@ -151,7 +177,7 @@
          * @return {string}
          */
         getToken : function() {
-            return $('meta[name="_token"]').attr('content');
+            return $('meta[name="'+this.tokenMetaName+'"]').attr('content');
         },
 
         /**
