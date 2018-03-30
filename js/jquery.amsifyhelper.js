@@ -854,6 +854,7 @@
                     // If pattern is defined
                     if(pattern !== undefined) {
                         var transformValue     = $.trim($(this).val());
+                        if(transformValue == '') return;
                         // Trim value if its exceeding pattern length and return 
                         if(transformValue.length > pattern.length) {
                             transformValue = transformValue.substr(0, pattern.length);
