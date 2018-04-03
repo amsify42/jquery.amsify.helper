@@ -950,6 +950,24 @@
             return string.substr(0, index) + replace + string.substr(index + 1);
         },
 
+        /**
+         * Fixed Clone Method for [select] inputs
+         */
+        fixedCloneMethod : function() {
+            (function(original) {
+              jQuery.fn.clone = function () {
+                var result          = original.apply(this, arguments),
+                    mySelects       = this.find('select').add(this.filter('select')),
+                    resultSelects   = result.find('select').add(result.filter('select'));
+                for(var i = 0, l = mySelects.length;  i < l; i++) {
+                  //resultSelects[i].selectedIndex = mySelects[i].selectedIndex;
+                  $(resultSelects[i]).val($(mySelects[i]).val());
+                } 
+                return result;
+              };
+            }) (jQuery.fn.clone);
+        },
+
     };
 
     /**
