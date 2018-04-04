@@ -2,19 +2,10 @@
  // http://www.amsify42.com
  (function(AmsifyHelper, $, undefined) {
     /**
-     * Global variable for this object context
-     */
-    var _self;
-    /**
      * initialization begins from here
      * @type {Object}
      */
     var Helper  = function () {
-        /**
-         * Assigning this context to _self
-         * @type {object}
-         */
-        _self               = this;
         /**
          * assign the base url to public property which is accessible from outside
          * @type {string}
@@ -130,6 +121,7 @@
          * set refresh token
          */    
         setRefreshToken : function() {
+            var _self = this;
             window.setInterval(function(){
                 var $metaToken = $('meta[name="'+_self.tokenMetaName+'"]');
                 $.post(this.tokenURL, {_token:$metaToken.attr('content')})
@@ -388,6 +380,7 @@
          * @param  {string} type
          */
         showFlash : function(message, type) {
+            var _self = this;
             if(message !== undefined) {
                 if($(_self.flashMessage.class).length && $(_self.flashMessage.class).css('display') == 'block') {
                     $(_self.flashMessage.class).slideUp('fast', function(){
@@ -409,6 +402,7 @@
          * @param  {string} type
          */
         checkMessage : function(message, type) {
+            var _self       = this;
             var msgClass    = 'black';
             if(type !== undefined) {
                 if(type == 'error') {
@@ -466,7 +460,8 @@
          * create click hide message event
          */
         setFlashMessage : function() {
-            $(document).on('click', _self.flashMessage.close, function(){
+            var _self = this;
+            $(document).on('click', this.flashMessage.close, function(){
                 $(this).parent(_self.flashMessage.class).slideUp();
             });
         },
@@ -625,6 +620,7 @@
         * @param {object}   config
         */
         setDraggableSort : function(selector, method, idAttr, params, config) {
+          var _self = this;
           var type  = 'amsify';
           var flash = false;
           if(config !== undefined) {
@@ -677,6 +673,7 @@
          * @return {string}
          */
         reorderImage : function(type){
+            var _self = this;
             if(type == 'bootstrap') {
                 return '<a class="'+_self.reorder.class.substring(1)+'"><span class="fa fa-arrows"></span></a>';
             } else if(type == 'materialize') {
@@ -694,6 +691,7 @@
          * @param  {string} type
          */
         callAjax : function(method, params, config, type, flash) {
+            var _self       = this;
             var actionType  = (type)? type : 'POST';
             var isFlash     = (flash)? flash : false;
 
@@ -838,6 +836,7 @@
          * @param  {string} type
          */
         mask : function(selector, pattern, type) {
+            var _self = this;
             $(selector).on('keyup focusout', function(e){
                 var key = e.charCode || e.keyCode || 0;
                 // If not backspace
