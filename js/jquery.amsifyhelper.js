@@ -630,11 +630,13 @@
           var childrens     = $(selector).children();
           $.each(childrens, function(index, child){
             if(!$(child).find(_self.reorder.class).length && !$(child).hasClass(_self.reorder.unsort.substring(1))){
-                var tagName  = $(child).prop('tagName').toLowerCase();
-                $(child).children().first().prepend(_self.reorderImage(type));
+                if(!$(child).find(_self.reorder.class).length) {
+                    $(child).children().first().prepend(_self.reorderImage(type));
+                }
             }
           });
           var config = {};
+          if($(selector).data("ui-sortable")) $(selector).sortable('destroy');
           $(function() {
             $(selector).sortable({
               placeholder   : 'ui-state-highlight',
