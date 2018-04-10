@@ -1,3 +1,2 @@
-# Amsify Jquery Helper 2.0
-
-Under development...
+Amsify Jquery Helper
+--------------------

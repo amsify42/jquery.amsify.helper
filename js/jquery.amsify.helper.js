@@ -1,5 +1,7 @@
- // Amsify42 Helper 2.0.0
- // http://www.amsify42.com
+/**
+ * Amsify Jquery Helper 2.0
+ * http://www.amsify42.com
+ */
  (function(AmsifyHelper, $, undefined) {
     /**
      * initialization begins from here
@@ -138,7 +140,7 @@
          * @param  {string} path
          * @return {string}
          */
-        AppUrl : function(path) {
+        appURL : function(path) {
             var appUrl = this.baseURL;
             if(this.getLocale()) {
                 appUrl += '/'+this.getLocale();    
@@ -206,7 +208,7 @@
             if(this.isAbsoluteURL(urlString)) {
                 URL = urlString;
             } else {
-                URL = this.AppUrl(urlString);
+                URL = this.appURL(urlString);
             }
             return URL;
         },
@@ -236,7 +238,7 @@
          * @return {string}
          */
         getAssetURL : function(name) {
-            return (this.assets[name])? this.AppUrl(this.assets[name]): this.baseURL;
+            return (this.assets[name])? this.appURL(this.assets[name]): this.baseURL;
         },
 
         /**
