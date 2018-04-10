@@ -8,6 +8,20 @@
   position: relative;
 }
 
+span.amsify-loader {
+    background: url('../images/loader.gif') no-repeat center;
+    width: 42px;
+    height: 42px;
+    display: inline-block;
+}
+
+span.amsify-loader-small {
+    background: url(../images/loader-small.gif) no-repeat center;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
 .section-body-loader,
 .modal-body-loader {
 	display: none;
@@ -416,6 +430,7 @@ ul.amsify-ajax-suggestions-container li a:focus {
     -ms-transition: 0.5s ease;
     -o-transition: 0.5s ease;
     transition: 0.5s ease;
+    cursor: pointer;
 }
 
 
