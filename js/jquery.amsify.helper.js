@@ -4,17 +4,17 @@
  */
  (function(AmsifyHelper, $, undefined) {
     /**
-     * initialization begins from here
+     * Initialization begins from here
      * @type {Object}
      */
     var Helper  = function () {
         /**
-         * assign the base url to public property which is accessible from outside
+         * Assign the base url to public property which is accessible from outside
          * @type {string}
          */
         this.baseURL        = window.location.protocol+'//'+window.location.host;
         /**
-         * assign the token url to public property which refresh token
+         * Assign the token url to public property which refresh token
          * @type {string}
          */
         this.tokenURL       = this.baseURL+'/refresh/token';
@@ -29,7 +29,7 @@
          */
         this.localeMetaName = '_locale';
         /**
-         * assets urls
+         * Assets urls
          * @type {Object}
          */
         this.assets         = {
@@ -39,7 +39,7 @@
             arrowUpDown : 'images/arrow-updown.png',
         };
         /**
-         * flash message info
+         * Flash message info
          * @type {Object}
          */
         this.flashMessage   = {
@@ -47,7 +47,7 @@
             close : '.amsify-message-close',
         };
         /**
-         * loader classes
+         * Loader classes
          * @type {Object}
          */
         this.loaders        = {
@@ -55,7 +55,7 @@
             section : '.section-body-loader',
         };
         /**
-         * reorder info
+         * Reorder info
          * @type {Object}
          */
         this.reorder        = {
@@ -65,19 +65,19 @@
     };
 
     /**
-     * collection of prototypes
+     * Collection of prototypes
      * @type {Object}
      */
     Helper.prototype = {
         /**
-         * this function is called by default to add flash errors to html body at top
+         * Initialization to add flash errors to html body at top
          */
         _init : function() {
             this.setFlashMessage();
         },
 
         /**
-         * set base url
+         * Set base url
          * @param  {string} urlString
          * @return {string}
          */
@@ -90,7 +90,7 @@
         },
 
         /**
-         * set token meta tag name
+         * Set token meta tag name
          * @param  {string} name
          */
         setTokenMetaName : function(name) {
@@ -98,7 +98,7 @@
         },
 
         /**
-         * set locale meta tag name
+         * Set locale meta tag name
          * @param  {string} name
          */
         setLocaleMetaName : function(name) {
@@ -106,7 +106,7 @@
         },
 
         /**
-         * set token url
+         * Set token url
          * @param  {string} urlString
          * @return {string}
          */
@@ -120,7 +120,7 @@
         },
 
         /**
-         * set refresh token
+         * Set refresh token
          */    
         setRefreshToken : function() {
             var _self = this;
@@ -136,7 +136,7 @@
         },
 
         /**
-         * create path based on base url
+         * Create path based on base url
          * @param  {string} path
          * @return {string}
          */
@@ -150,7 +150,7 @@
         },
 
         /**
-         * remove first forward slash from string
+         * Remove first forward slash from string
          * @param  {string} path
          * @return {string}
          */
@@ -159,7 +159,7 @@
         },
 
         /**
-         * get Locale from meta tag
+         * Get Locale from meta tag
          * @return {string}
          */
         getLocale : function(path) {
@@ -167,7 +167,7 @@
         },
 
         /**
-         * get unique token from meta tag if it is set
+         * Get unique token from meta tag if it is set
          * @return {string}
          */
         getToken : function() {
@@ -175,7 +175,7 @@
         },
 
         /**
-         * add event either directly to selector or from DOM
+         * Add event either directly to selector or from DOM
          * @param {boolean}  fromDOM
          * @param {string}   event
          * @param {selector} selector
@@ -190,7 +190,7 @@
         },
 
         /**
-         * get selector of input by name
+         * Get selector of input by name
          * @param  {string} name
          * @return {string}
          */
@@ -199,7 +199,7 @@
         },
 
         /**
-         * get absolute/relative url based on value passed
+         * Get absolute/relative url based on value passed
          * @param  {string} urlString
          * @return {string}
          */
@@ -214,7 +214,7 @@
         },
 
         /**
-         * check if the string is absolute URL
+         * Check if the string is absolute URL
          * @param  {string}  urlString
          * @return {Boolean}
          */
@@ -224,7 +224,7 @@
         },
 
         /**
-         * Set Asset URL
+         * Set asset URL
          * @param {string} name
          * @param {string} value
          */
@@ -233,7 +233,7 @@
         },
 
         /**
-         * Get Asset URL
+         * Get asset URL
          * @param  {string} name
          * @return {string}
          */
@@ -242,7 +242,7 @@
         },
 
         /**
-         * stop form submit
+         * Stop form submit
          * @param  {event}    e
          * @param  {selector} submitSelector
          * @param  {string}   defaultText
@@ -258,7 +258,7 @@
         },
 
         /**
-         * detect IE browser
+         * Detect IE browser
          * @return {integer}
          */
         detectIE : function() {
@@ -284,7 +284,7 @@
         },
 
         /**
-         * based on browser formdata will be created
+         * Based on browser formdata will be created
          * @param  {selector} formSelector
          * @param  {boolean}  serialize
          * @param  {object}   extraFields
@@ -317,7 +317,7 @@
         },
 
         /**
-         * get object size
+         * Get object size
          * @param  {object} object
          * @param  {string} key
          * @return {integer}
@@ -334,7 +334,7 @@
         },
 
         /**
-         * make the array distinct
+         * Make the array distinct
          * @param  {array} array
          * @return {array}
          */
@@ -349,7 +349,7 @@
         },
 
         /**
-         * uppercase the text
+         * Uppercase the text
          * @param  {string} string
          * @return {string}
          */
@@ -358,7 +358,7 @@
         },
 
         /**
-         * show url on browser address bar
+         * Show url on browser address bar
          * @param  {string}  path
          * @param  {integer} page
          */
@@ -377,7 +377,7 @@
         },
 
         /**
-         * show flash message
+         * Show flash message
          * @param  {string} message
          * @param  {string} type
          */
@@ -399,7 +399,7 @@
         },
 
         /**
-         * check whether message is appended in html
+         * Check whether message is appended in html
          * @param  {string} message
          * @param  {string} type
          */
@@ -440,26 +440,26 @@
         },
 
         /**
-         * convert object to html tags
+         * Convert object to html tags
          * @param {object}
          */
         addHTML : function(htmlStructure) {
             $.each(htmlStructure, function(index, element){
-              var $object;
-              if(element !== undefined) {
-                  $.each(element, function(key, tag){
-                    if(key != 'appendTo' && key != 'prependTo') {
-                        $object = $(key, tag);
-                    } else {
-                        $object[key](tag);
-                    }
-                  });
+                var $object;
+                if(element !== undefined) {
+                    $.each(element, function(key, tag){
+                        if(key != 'appendTo' && key != 'prependTo'){
+                            $object = $(key, tag);
+                        } else {
+                            $object[key](tag);
+                        }
+                    });
                 }
             });
         },
 
         /**
-         * create click hide message event
+         * Create click hide message event
          */
         setFlashMessage : function() {
             var _self = this;
@@ -468,9 +468,8 @@
             });
         },
 
-
         /**
-         * invoke callback based on config or element attribute
+         * Invoke callback based on config or element attribute
          * @param  {object}   config
          * @param  {string}   key      
          * @param  {selector} selector
@@ -492,7 +491,7 @@
         },
 
         /**
-         * fix IE for body loader
+         * Fix IE for body loader
          * @param  {string} type
          */
         bodyLoaderIEfix : function(type) {
@@ -506,7 +505,7 @@
         },
 
         /**
-         * add sort icon wherever required
+         * Add sort icon wherever required
          * @param  {string} rowHtml       
          * @param  {string} type          
          * @param  {string} rowSearchInput
@@ -561,7 +560,7 @@
         },
 
         /**
-         * set default icon for sorting icons
+         * Set default icon for sorting icons
          * @param {selector} sortSelector
          * @param {stringe]} type
          */
@@ -577,7 +576,7 @@
         },
 
         /**
-         * convert bytes to file size
+         * Convert bytes to file size
          * @param  {integer} bytes
          * @param  {integer} decimals
          * @return {string}
@@ -592,7 +591,7 @@
         },
 
         /**
-         * convert the string to short name
+         * Convert the string to short name
          * @param  {string}  name
          * @param  {integer} limit
          * @param  {string}  prefex
@@ -614,11 +613,11 @@
         },
 
         /**
-        * set draggable sort - jquery ui id required
+        * Set draggable sort - jquery ui required
         * @param {selector} selector
         * @param {string}   method
         * @param {string}   idAttr
-        * @param {object}   extraParams
+        * @param {object}   params
         * @param {object}   config
         */
         setDraggableSort : function(selector, method, idAttr, params, config) {
@@ -672,7 +671,7 @@
         },
 
         /**
-         * get reorder image
+         * Get reorder image
          * @param  {string} type
          * @return {string}
          */
@@ -688,7 +687,7 @@
         },
 
         /**
-         * call ajax and show response in flash message or iterate field errors
+         * Call ajax and show response in flash message/iterate field errors
          * @param  {string} method
          * @param  {object} params
          * @param  {object} config
@@ -766,7 +765,7 @@
         },
 
         /**
-         * transform input to uppercase
+         * Transform input to uppercase
          * @param  {selector} selector
          */
         upperCase : function(selector) {
@@ -776,7 +775,7 @@
         },
 
         /**
-         * transform input to decimals
+         * Transform input to decimals
          * @param  {selector} selector
          */
         onlyDecimals : function(selector) {
@@ -786,7 +785,7 @@
         },
 
         /**
-         * transform input to numerics
+         * Transform input to numerics
          * @param  {selector} selector
          */
         onlyNumbers  : function(selector) {
@@ -796,7 +795,7 @@
         },
 
         /**
-         * transform input to string without special char
+         * Transform input to string without special char
          * @param  {selector} selector
          */
         noSpecialChar : function(selector) {
@@ -808,7 +807,7 @@
         },
 
         /**
-         * transform input to string with single space
+         * Transform input to string with single space
          * @param  {selector} selector
          */
         singleSpace : function(selector) {
@@ -818,7 +817,7 @@
         },
 
         /**
-         * transform input to string with no space
+         * Transform input to string with no space
          * @param  {selector} selector
          */
         noSpace : function(selector) {
@@ -834,7 +833,7 @@
         },
 
         /**
-         * transform and mask the input based on pattern applied
+         * Transform and mask the input based on pattern applied
          * @param  {selector} selector
          * @param  {string} pattern
          * @param  {string} type
@@ -923,7 +922,7 @@
         },
 
         /**
-         * check pattern and input for adding pattern characters
+         * Check pattern and input for adding pattern characters
          * @param  {integer} position
          * @param  {string} pattern
          * @param  {array} specialCharPositions
@@ -943,7 +942,7 @@
         },
 
         /**
-         * replace string at index position
+         * Replace string at index position
          * @param  {string} string
          * @param  {string} replace
          * @param  {integer} index
@@ -974,7 +973,7 @@
     };
 
     /**
-     * Initializing the helper
+     * Creating single instance of helper and assigning to global AmsifyHelper
      */
     window.AmsifyHelper = new Helper();
     window.AmsifyHelper._init();
