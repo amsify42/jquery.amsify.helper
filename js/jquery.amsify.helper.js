@@ -765,6 +765,36 @@
         },
 
         /**
+         * Show Modal
+         * @param  {string}   type
+         * @param  {selector} modalSelector
+         */
+        showModal : function(type, modalSelector) {
+            if(type == 'bootstrap') {
+                $(modalSelector).modal('show');
+            } else if(type == 'materialize') {
+                $(modalSelector).modal('open');
+            } else {
+                $(modalSelector).css({'display' : 'block', 'visibility' : 'visible'});
+            }
+        },
+
+        /**
+         * Hide Modal
+         * @param  {string}   type
+         * @param  {selector} modalSelector
+         */
+        hideModal : function(type, modalSelector) {
+            if(type == 'bootstrap') {
+                $(modalSelector).modal('hide');
+            } else if(type == 'materialize') {
+                $(modalSelector).modal('close');
+            } else {
+                $(modalSelector).css({'display' : 'none', 'visibility' : 'none'});
+            }
+        },
+
+        /**
          * Transform input to uppercase
          * @param  {selector} selector
          */
