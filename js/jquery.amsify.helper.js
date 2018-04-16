@@ -780,7 +780,16 @@
          */
         onlyDecimals : function(selector) {
           $(selector).on('keyup focusout', function(event) {
-            this.value = this.value.replace(/[^0-9\.]/g,'');
+            this.value  = this.value.replace(/[^0-9\.]/g,'');
+            var strArr  = this.value.split('.');
+            var value   = '';
+            $.each(strArr, function(index, str){
+                if(str || index) { 
+                    value += (index)? '.'+str: str;
+                    if(index) return false;
+                }
+            });
+            this.value  = value;
           });
         },
 
