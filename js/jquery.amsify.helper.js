@@ -795,6 +795,47 @@
         },
 
         /**
+         * Background Action
+         * @param  {selector} selector
+         * @param  {string} type
+         */
+        actionBackground: function(selector, type) {
+            var bClass = '';
+            switch(type) {
+                case 'add':
+                    bClass = 'amsify-background amsify-background-green';
+                break;
+
+                case 'remove':
+                    bClass = 'amsify-background amsify-background-red';
+                break;
+
+                default:
+                    bClass = 'amsify-background amsify-background-blue';
+                break;
+            }
+            $(selector).addClass(bClass);
+            $(selector).css({'opacity': '0.7', 'pointer-events': 'none'});
+            setTimeout(function(){
+                if(type == 'remove') {
+                    $findRow = $(selector).find('td').wrapInner('<div style="display: block;" />').parent().find('td > div');
+                    console.info($findRow);
+                    if($findRow.length) {
+                        $findRow.slideUp(700, function(){
+                          $(this).parent().parent().remove();
+                         });
+                    } else {
+                        $(selector).animate({'right':'-1000px'}, 'slow');
+                    }
+                    setTimeout(function(){ $(selector).remove(); }, 1000);
+                } else {
+                    $(selector).removeClass(bClass);
+                }
+                $(selector).css({'opacity': '1', 'pointer-events': 'auto'});
+            }, 3000);
+        },
+
+        /**
          * Transform input to uppercase
          * @param  {selector} selector
          */
